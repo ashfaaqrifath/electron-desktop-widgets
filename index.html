@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Battery Widget</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="widget-stack">
+    <div class="widget battery-widget">
+      <div class="battery-icon" aria-hidden="true">
+        <svg class="battery-ring" viewBox="0 0 76 76">
+          <circle class="ring-track" cx="38" cy="38" r="31"></circle>
+          <circle class="ring-fill" id="batteryFill" cx="38" cy="38" r="31"></circle>
+        </svg>
+        <div class="percent" id="batteryPercent">--%</div>
+        <div class="charging-bolt" id="chargingBolt"></div>
+      </div>
+      <div class="charging-dot" aria-hidden="true"></div>
+    </div>
+
+    <div class="widget countdown-widget">
+      <div class="countdown-content">
+        <div class="countdown-days" id="countdownValue">--</div>
+        <div class="countdown-label">days left</div>
+        <div class="countdown-date" id="countdownDate">--</div>
+      </div>
+      <div class="countdown-dot" aria-hidden="true"></div>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
