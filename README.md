@@ -140,6 +140,3 @@ C: drive storage is read with Windows/.NET `DriveInfo`.
 
 The window is frameless, transparent, skipped from the taskbar, draggable, and not always-on-top.
 
-## License
-
-MIT
