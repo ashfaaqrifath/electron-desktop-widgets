@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, screen, Tray, Menu } = require('electron');
+const { app, BrowserWindow, ipcMain, screen, Tray, Menu, shell } = require('electron');
 const { execFile } = require('child_process');
 const fs = require('fs');
 const path = require('path');
@@ -6,33 +6,50 @@ const path = require('path');
 let mainWindow;
 let tray;
 
+function showWidgets() {
+  if (mainWindow) {
+    mainWindow.showInactive();
+  }
+}
+
+function hideWidgets() {
+  if (mainWindow) {
+    mainWindow.hide();
+  }
+}
+
+function reloadWidgets() {
+  if (mainWindow) {
+    mainWindow.webContents.reloadIgnoringCache();
+  }
+}
+
+function getCountdownTargetPath() {
+  return path.join(__dirname, 'countdown-date.txt');
+}
+
+function editCountdownDate() {
+  shell.openPath(getCountdownTargetPath());
+}
+
+function openProjectFolder() {
+  shell.openPath(__dirname);
+}
+
 function createTray() {
   const iconPath = path.join(__dirname, 'tray-icon.png');
   tray = new Tray(iconPath);
   tray.setToolTip('Desktop Widgets');
 
   const contextMenu = Menu.buildFromTemplate([
-    {
-      label: 'Show widgets',
-      click: () => {
-        if (mainWindow) {
-          mainWindow.showInactive();
-        }
-      },
-    },
-    {
-      label: 'Hide widgets',
-      click: () => {
-        if (mainWindow) {
-          mainWindow.hide();
-        }
-      },
-    },
+    { label: 'Show widgets', click: showWidgets },
+    { label: 'Hide widgets', click: hideWidgets },
+    { label: 'Refresh widgets', click: reloadWidgets },
     { type: 'separator' },
-    {
-      label: 'Quit',
-      click: () => app.quit(),
-    },
+    { label: 'Edit countdown date', click: editCountdownDate },
+    { label: 'Open project folder', click: openProjectFolder },
+    { type: 'separator' },
+    { label: 'Quit', click: () => app.quit() },
   ]);
 
   tray.setContextMenu(contextMenu);
@@ -42,13 +59,14 @@ function createTray() {
     }
 
     if (mainWindow.isVisible()) {
-      mainWindow.hide();
+      hideWidgets();
       return;
     }
 
-    mainWindow.showInactive();
+    showWidgets();
   });
 }
+
 function getInitialPosition() {
   const { workArea } = screen.getPrimaryDisplay();
 
@@ -59,7 +77,7 @@ function getInitialPosition() {
 }
 
 function getCountdownTargetDate() {
-  const targetPath = path.join(__dirname, 'countdown-date.txt');
+  const targetPath = getCountdownTargetPath();
 
   try {
     return fs.readFileSync(targetPath, 'utf8').trim();

@@ -65,6 +65,19 @@ Example:
 The widget displays the date as `21/12/2026`.
 
 
+
+## System Tray
+
+When the widgets are running, a tray icon is shown. The tray menu includes:
+
+- Show widgets
+- Hide widgets
+- Refresh widgets
+- Edit countdown date
+- Open project folder
+- Quit
+
+Use **Edit countdown date** to open `countdown-date.txt` in your default text editor. After saving the date, use **Refresh widgets** to reload the countdown.
 ## Refresh Intervals
 
 Refresh timings are set in `script.js`:
