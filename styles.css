@@ -1,0 +1,259 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.94);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  user-select: none;
+}
+
+.widget-stack {
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-template-rows: 118px 118px 118px;
+  gap: 16px;
+  -webkit-app-region: drag;
+}
+
+.widget {
+  width: 118px;
+  height: 118px;
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 22px;
+  background: rgba(25, 36, 45, 0.76);
+  backdrop-filter: blur(28px) saturate(170%);
+  -webkit-backdrop-filter: blur(28px) saturate(170%);
+}
+
+.widget::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  pointer-events: none;
+  border-radius: 21px;
+}
+
+.battery-icon,
+.storage-icon {
+  --charge-color: #28e66f;
+  width: 76px;
+  height: 76px;
+  position: relative;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(22, 34, 42, 0.96);
+  box-shadow:
+    0 0 20px rgba(40, 230, 111, 0.46),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+.battery-icon::before,
+.storage-icon::before {
+  content: "";
+  position: absolute;
+  inset: 9px;
+  z-index: 0;
+  border-radius: 50%;
+  background: rgba(22, 34, 42, 0.96);
+  box-shadow: inset 0 1px 10px rgba(255, 255, 255, 0.1);
+}
+
+.battery-icon::after,
+.storage-icon::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  pointer-events: none;
+  border-radius: 50%;
+}
+
+.battery-icon[data-level="medium"] {
+  --charge-color: #fbbf24;
+  box-shadow:
+    0 0 20px rgba(251, 191, 36, 0.46),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+.battery-icon[data-level="low"],
+.storage-widget[data-level="low"] .storage-icon {
+  --charge-color: #ef4444;
+  box-shadow:
+    0 0 20px rgba(239, 68, 68, 0.5),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+.battery-icon[data-charging="true"] {
+  --charge-color: #28e66f;
+  box-shadow:
+    0 0 20px rgba(40, 230, 111, 0.46),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+.battery-ring,
+.storage-ring {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: visible;
+  transform: rotate(-90deg);
+}
+
+.ring-track,
+.ring-fill,
+.storage-fill {
+  fill: none;
+  stroke-width: 8;
+}
+
+.ring-track {
+  stroke: rgba(120, 139, 153, 0.42);
+}
+
+.ring-fill,
+.storage-fill {
+  stroke: var(--charge-color);
+  stroke-linecap: round;
+  stroke-dasharray: 194.78;
+  filter: drop-shadow(0 0 6px var(--charge-color));
+  stroke-dashoffset: 194.78;
+  transition: stroke-dashoffset 320ms ease, stroke 320ms ease;
+}
+
+.percent,
+.storage-readout {
+  position: relative;
+  z-index: 2;
+  color: #bbbbbb;
+  font-weight: 750;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+  text-align: center;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.48);
+}
+
+.percent {
+  font-size: 15px;
+}
+
+.storage-readout {
+  display: grid;
+  gap: 2px;
+}
+
+.storage-readout span {
+  font-size: 18px;
+}
+
+.storage-readout small {
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 8px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.countdown-content {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  gap: 4px;
+  width: 100%;
+  padding: 0 10px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+}
+
+.countdown-days {
+  color: #bbbbbb;
+  font-size: 35px;
+  font-weight: 780;
+  line-height: 0.9;
+  text-shadow: none;
+}
+
+.countdown-widget[data-level="medium"] .countdown-dot {
+  --dot-color: #fbbf24;
+  --dot-pulse: rgba(251, 191, 36, 0.55);
+  --dot-glow: rgba(251, 191, 36, 0.7);
+}
+
+.countdown-widget[data-level="low"] .countdown-dot {
+  --dot-color: #ef4444;
+  --dot-pulse: rgba(239, 68, 68, 0.55);
+  --dot-glow: rgba(239, 68, 68, 0.72);
+}
+
+.countdown-label {
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.countdown-date {
+  max-width: 98px;
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 10px;
+  font-weight: 650;
+  line-height: 1.15;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+
+
+.charging-dot,
+.countdown-dot {
+  --dot-color: #28e66f;
+  --dot-pulse: rgba(40, 230, 111, 0.55);
+  --dot-glow: rgba(40, 230, 111, 0.7);
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--dot-color);
+  box-shadow: 0 0 0 var(--dot-pulse), 0 0 8px var(--dot-glow);
+  animation: charging-pulse 1.55s ease-in-out infinite;
+}
+
+.charging-dot {
+  display: none;
+}
+
+.widget[data-charging="true"] .charging-dot {
+  display: block;
+}
+
+@keyframes charging-pulse {
+  0% {
+    box-shadow: 0 0 0 0 var(--dot-pulse), 0 0 8px var(--dot-glow);
+    transform: scale(0.9);
+  }
+
+  70% {
+    box-shadow: 0 0 0 7px transparent, 0 0 10px var(--dot-glow);
+    transform: scale(1);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 transparent, 0 0 8px var(--dot-glow);
+    transform: scale(0.9);
+  }
+}
